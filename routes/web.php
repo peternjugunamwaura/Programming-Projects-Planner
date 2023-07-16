@@ -13,5 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\DefaultRedirector::class, 'index']);
 

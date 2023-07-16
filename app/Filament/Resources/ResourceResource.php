@@ -23,7 +23,25 @@ class ResourceResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('description')
+                ->required()
+                ->maxlength(255),
+                Forms\Components\Select::make('technology_id')
+                ->relationship('technology','name')
+                ->searchable()
+                ->preload()
+                ->required()
+                ->createOptionForm([
+                    Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength('255'),
+                    Forms\Components\select::make('proficiency')->options([
+                        'Beginner'=>'beginner',
+                        'Intermediate'=>'intermediate',
+                        'Proficient'=>'proficient'
+                    ])->required(),
+                    ]),
+                Forms\Components\TextInput::make('link')
             ]);
     }
 
@@ -31,6 +49,9 @@ class ResourceResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('technology.name'),
+                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('link')
                 //
             ])
             ->filters([
@@ -43,14 +64,14 @@ class ResourceResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -58,5 +79,5 @@ class ResourceResource extends Resource
             'create' => Pages\CreateResource::route('/create'),
             'edit' => Pages\EditResource::route('/{record}/edit'),
         ];
-    }    
+    }
 }
